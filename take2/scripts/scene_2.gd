@@ -1,3 +1,4 @@
+#это уровень
 extends Node2D
 
 @export var materwelon_scene : PackedScene
@@ -6,18 +7,23 @@ extends Node2D
 @onready var spawn_path = $mwpath/mwspawn
 
 func _ready():
-	for i in 3:
+	Global2.lives = 3
+
+func _process(delta):
+	if Global2.materwelons <= 0:
 		spawn()
 
 func spawn(mwposition = null, mwvelocity = null):
-	if mwposition == null:
-		spawn_path.progress = randi()
-		mwposition = spawn_path.position
+	for i in 3:
 	
-	if mwvelocity == null:
-		mwvelocity = Vector2.RIGHT.rotated(randf_range(0, TAU)) * randf_range(50, 125)
-	
-	var mw_instance = materwelon_scene.instantiate()
-	mw_instance.screensize = screensize
-	mw_instance.start(mwposition, mwvelocity)
-	call_deferred("add_child", mw_instance)
+		if mwposition == null:
+			spawn_path.progress = randi()
+			mwposition = spawn_path.position
+		
+		if mwvelocity == null:
+			mwvelocity = Vector2.RIGHT.rotated(randf_range(0, TAU)) * randf_range(50, 125)
+		
+		var mw_instance = materwelon_scene.instantiate()
+		mw_instance.screensize = screensize
+		mw_instance.start(mwposition, mwvelocity)
+		call_deferred("add_child", mw_instance)

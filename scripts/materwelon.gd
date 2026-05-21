@@ -33,6 +33,7 @@ var level: Level:
 				collision_mid.visible = false
 				collision_small.visible = true
 			Level.DED:
+				Global2.materwelons -= 1
 				self.queue_free()
 	get:
 		return _level
@@ -56,6 +57,8 @@ func start(_position, _velocity):
 	position = _position
 	linear_velocity = _velocity
 	angular_velocity = randf_range(-PI, PI)
+	
+	Global2.materwelons += 1
 
 func hit():
 	print("HIT")

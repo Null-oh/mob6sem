@@ -13,6 +13,11 @@ signal right_up
 signal fire_signal
 signal fire_up
 
+@onready var pause_window = $MarginContainer/pause
+
+func _ready():
+	pause_window.visible = false
+
 func _on_thrust_button_up():
 	thrust_up.emit()
 
@@ -36,3 +41,15 @@ func _on_fire_button_down():
 
 func _on_fire_button_up():
 	fire_up.emit()
+
+
+func _on_back_pressed():
+	pause_window.visible = false
+	Engine.time_scale = 1
+
+func _on_exit_pressed():
+	get_tree().quit()
+
+func _on_pause_pressed():
+	pause_window.visible = true
+	Engine.time_scale = 0

@@ -5,7 +5,7 @@ enum {INIT, ALIVE, SAFE, DED}
 var state = INIT
 
 @export var engine_power = 1000
-@export var spin_power = 30000
+@export var spin_power = 50000
 var thrust = Vector2.ZERO
 var rotation_dir = 0
 
