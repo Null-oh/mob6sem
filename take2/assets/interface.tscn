@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://ck8x0dqrbwbok"]
+
+[ext_resource type="Script" uid="uid://drp3rhyoougmd" path="res://take2/scripts/interface.gd" id="1_qfl0l"]
+
+[node name="interface" type="CanvasLayer" unique_id=1559599400]
+script = ExtResource("1_qfl0l")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1000357764]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer" unique_id=1901999982]
+custom_minimum_size = Vector2(170, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 10
+
+[node name="thrust" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=1599700831]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 50
+text = " ↑ "
+
+[node name="fire" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=1972720982]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "🧦"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=672303994]
+custom_minimum_size = Vector2(170, 80)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/separation = 10
+
+[node name="left" type="Button" parent="MarginContainer/HBoxContainer" unique_id=1168699334]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 50
+text = " ← "
+
+[node name="right" type="Button" parent="MarginContainer/HBoxContainer" unique_id=1213064421]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 50
+text = " → "
+
+[connection signal="button_down" from="MarginContainer/HBoxContainer2/thrust" to="." method="_on_thrust_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer2/thrust" to="." method="_on_thrust_button_up"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer2/fire" to="." method="_on_fire_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer2/fire" to="." method="_on_fire_button_up"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/left" to="." method="_on_left_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/left" to="." method="_on_left_button_up"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/right" to="." method="_on_right_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/right" to="." method="_on_right_button_up"]

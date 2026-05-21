@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://cngn31k6m0g8f"]
+
+[ext_resource type="Script" path="res://scripts/sock.gd" id="1_j7dmn"]
+[ext_resource type="Texture2D" uid="uid://bt0kdb2nkjnbb" path="res://img/sock.png" id="2_xvles"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vcppc"]
+atlas = ExtResource("2_xvles")
+region = Rect2(0, 0, 33, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbelb"]
+atlas = ExtResource("2_xvles")
+region = Rect2(0, 48, 33, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqslm"]
+atlas = ExtResource("2_xvles")
+region = Rect2(33, 48, 33, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ya8np"]
+atlas = ExtResource("2_xvles")
+region = Rect2(33, 0, 33, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8a14b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vcppc")
+}],
+"loop": true,
+"name": &"green",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbelb")
+}],
+"loop": true,
+"name": &"orange",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqslm")
+}],
+"loop": true,
+"name": &"red",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ya8np")
+}],
+"loop": true,
+"name": &"yellow",
+"speed": 5.0
+}]
+
+[node name="sock" type="Area2D"]
+script = ExtResource("1_j7dmn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_8a14b")
+animation = &"green"
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -24, 16, -24, 17, -16, 17, 5, -5, 24, -11, 24, -16, 19, -16, 12, -1, 0, -1, -16)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

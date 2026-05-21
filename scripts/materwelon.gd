@@ -1,0 +1,147 @@
+#это арбуз
+extends RigidBody2D
+
+@onready var sprite = $sprite
+@onready var collision_big = $collision_big
+@onready var collision_mid = $collision_mid
+@onready var collision_small = $collision_small
+
+@onready var notifier = $notifier
+
+@onready var screensize = get_viewport_rect().size
+@export var mw_scene = preload("res://assets/materwelon.tscn")
+
+enum Level { BIG, MID, SMALL, DED}
+var _level: Level
+var level: Level:
+	set(value):
+		_level = value
+		match _level:
+			Level.BIG:
+				sprite.play("big")
+				collision_big.visible = false
+				collision_mid.visible = false
+				collision_small.visible = false
+			Level.MID: 
+				sprite.play("mid")
+				collision_big.visible = false
+				collision_mid.visible = true
+				collision_small.visible = false
+			Level.SMALL:
+				sprite.play("small")
+				collision_big.visible = false
+				collision_mid.visible = false
+				collision_small.visible = true
+			Level.DED:
+				self.queue_free()
+	get:
+		return _level
+
+func _ready():
+	add_to_group("materwelons")
+	
+	level = Level.BIG
+	
+	gravity_scale = 0
+	linear_damp = 0
+	angular_damp = 0
+	
+	#contact_monitor = true
+	#max_contacts_reported = 1
+	#collision_mask = 2
+	
+	#notifier.rect = Rect2(Vector2.ZERO, screensize)
+
+func start(_position, _velocity):
+	position = _position
+	linear_velocity = _velocity
+	angular_velocity = randf_range(-PI, PI)
+
+func hit():
+	print("HIT")
+	match level:
+		Level.BIG:
+			level = Level.MID
+			print("BIG to MID")
+		Level.MID:
+			level = Level.SMALL
+			print("MID to SMALL")
+		Level.SMALL:
+			level = Level.DED
+			print("DED")
+		Level.DED: pass
+
+func _on_area_2d_body_entered(body):
+	if body.name == "fish":
+		print("ship hit")
+	if body.is_in_group("socks"):
+		print("sock hit")
+		hit()
+		body.queue_free()
+
+func teleport():
+	var camera = get_viewport().get_camera_2d()
+	if not camera:
+		return
+	
+	var camera_global_pos = camera.global_position
+	var top_left = camera_global_pos - screensize * 0.5 / camera.zoom
+	var bottom_right = camera_global_pos + screensize * 0.5 / camera.zoom
+	
+	var new_x = global_position.x
+	var new_y = global_position.y
+	
+	if global_position.x < top_left.x:
+		new_x = bottom_right.x - (top_left.x - global_position.x)
+	elif global_position.x > bottom_right.x:
+		new_x = top_left.x + (global_position.x - bottom_right.x)
+	if global_position.y < top_left.y:
+		new_y = bottom_right.y - (top_left.y - global_position.y)
+	elif global_position.y > bottom_right.y:
+		new_y = top_left.y + (global_position.y - bottom_right.y)
+	
+	global_position = Vector2(new_x, new_y)
+
+func _on_notifier_screen_exited():
+	print("mw exited")
+	#screensize = get_viewport_rect().size
+	#var new_pos = global_position
+	#var margin = 10
+	#
+	#if global_position.x < 0:
+		#new_pos.x = screensize.x - margin
+		#print(position)
+		#print("Teleport right")
+		#print(position)
+	#elif global_position.x > screensize.x:
+		#new_pos.x = margin
+		#print(position)
+		#print("Teleport left")
+		#print(position)
+	#
+	#if global_position.y < 0:
+		#new_pos.y = screensize.y - margin
+		#print(position)
+		#print("Teleport down")
+		#print(position)
+	#elif global_position.y > screensize.y:
+		#new_pos.y = margin
+		#print(position)
+		#print("Teleport up")
+		#print(position)
+#
+	#var mw_velocity = linear_velocity
+	#var mw_instance = mw_scene.instantiate()
+	#add_child(mw_instance)
+	#mw_instance.screensize = screensize
+	#mw_instance.start(new_pos, mw_velocity, level)
+	#self.queue_free()
+	
+	#global_position = Vector2(fposmod(global_position.x, screensize.x), fposmod(global_position.y, screensize.y))
+	teleport()
+
+func _integrate_forces(physics_state):
+	var xform = physics_state.transform
+	xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
+	xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
+	physics_state.transform = xform

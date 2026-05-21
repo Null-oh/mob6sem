@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtn2frtkdgpkv"]
+
+[ext_resource type="Script" path="res://scripts/ship.gd" id="1_yjmea"]
+[ext_resource type="Texture2D" uid="uid://2yynbvxa1sf0" path="res://img/fish.png" id="2_e2tm4"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1swey"]
+radius = 29.0
+height = 184.0
+
+[node name="fish" type="CharacterBody2D"]
+script = ExtResource("1_yjmea")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-28, 3)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_e2tm4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+scale = Vector2(0.6, 0.6)
+shape = SubResource("CapsuleShape2D_1swey")

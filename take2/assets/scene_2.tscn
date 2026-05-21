@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://8dd6ak2saah5"]
+
+[ext_resource type="PackedScene" uid="uid://d0a5c4kmuovx1" path="res://take2/assets/fish2.tscn" id="1_fyqr4"]
+[ext_resource type="Script" uid="uid://d3obqs6140kal" path="res://take2/scripts/scene_2.gd" id="1_gftme"]
+[ext_resource type="Texture2D" uid="uid://crwvaiexi0aa8" path="res://img/space.PNG" id="1_mof4x"]
+[ext_resource type="PackedScene" uid="uid://ck8x0dqrbwbok" path="res://take2/assets/interface.tscn" id="2_1ttdm"]
+[ext_resource type="PackedScene" uid="uid://bejhehyhs8f7l" path="res://assets/materwelon.tscn" id="2_oh8wx"]
+
+[sub_resource type="Curve2D" id="Curve2D_oh8wx"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1312, 0, 0, 0, 0, 0, 1312, 864, 0, 0, 0, 0, 0, 864, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[node name="scene2" type="Node2D" unique_id=264595317]
+script = ExtResource("1_gftme")
+materwelon_scene = ExtResource("2_oh8wx")
+
+[node name="background" type="Sprite2D" parent="." unique_id=1466991617]
+texture = ExtResource("1_mof4x")
+centered = false
+
+[node name="Fish2" parent="." unique_id=1628638906 instance=ExtResource("1_fyqr4")]
+position = Vector2(712, 473)
+
+[node name="interface" parent="." unique_id=1582348020 instance=ExtResource("2_1ttdm")]
+
+[node name="mwpath" type="Path2D" parent="." unique_id=1026540882]
+curve = SubResource("Curve2D_oh8wx")
+
+[node name="mwspawn" type="PathFollow2D" parent="mwpath" unique_id=1657152571]

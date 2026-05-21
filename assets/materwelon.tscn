@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://bejhehyhs8f7l"]
+
+[ext_resource type="Script" uid="uid://o2fpeaxoro5w" path="res://scripts/materwelon.gd" id="1_fvbvm"]
+[ext_resource type="Texture2D" uid="uid://degwqggs2jwg0" path="res://img/wm.png" id="2_4ie44"]
+[ext_resource type="Texture2D" uid="uid://dwn5is2b6nd70" path="res://img/wm2.PNG" id="3_6f6gg"]
+[ext_resource type="Texture2D" uid="uid://l0l78wk376pq" path="res://img/wm3.PNG" id="4_iv38g"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_b5r7r"]
+bounce = 0.5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6kkv5"]
+atlas = ExtResource("2_4ie44")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u8811"]
+atlas = ExtResource("3_6f6gg")
+region = Rect2(0, 0, 80, 70)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1ceb"]
+atlas = ExtResource("4_iv38g")
+region = Rect2(0, 0, 50, 52)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kbwx2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6kkv5")
+}],
+"loop": true,
+"name": &"big",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u8811")
+}],
+"loop": true,
+"name": &"mid",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h1ceb")
+}],
+"loop": true,
+"name": &"small",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g3b7e"]
+radius = 46.0109
+
+[node name="materwelon" type="RigidBody2D" unique_id=208800848]
+physics_material_override = SubResource("PhysicsMaterial_b5r7r")
+gravity_scale = 0.0
+inertia = 5.0
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_fvbvm")
+
+[node name="sprite" type="AnimatedSprite2D" parent="." unique_id=1354988821]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_kbwx2")
+animation = &"small"
+
+[node name="collision_big" type="CollisionShape2D" parent="." unique_id=1160656581]
+shape = SubResource("CircleShape2D_g3b7e")
+
+[node name="collision_mid" type="CollisionPolygon2D" parent="." unique_id=240681870]
+visible = false
+polygon = PackedVector2Array(-39, 16, 26, -35, 39, -10, 27, 19, -5, 32)
+
+[node name="collision_small" type="CollisionPolygon2D" parent="." unique_id=1075294459]
+visible = false
+polygon = PackedVector2Array(-1, -24, -18, 18, 0, 23, 23, 15)
+
+[node name="notifier" type="VisibleOnScreenNotifier2D" parent="." unique_id=600089654]
+
+[connection signal="screen_exited" from="notifier" to="." method="_on_notifier_screen_exited"]

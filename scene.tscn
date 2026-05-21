@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://ihlb1veriha5"]
+
+[ext_resource type="Texture2D" uid="uid://crwvaiexi0aa8" path="res://img/space.PNG" id="1_5l5hc"]
+[ext_resource type="Script" path="res://scripts/scene.gd" id="1_vrti2"]
+[ext_resource type="PackedScene" uid="uid://dtn2frtkdgpkv" path="res://assets/fish.tscn" id="2_0khgc"]
+
+[sub_resource type="Curve2D" id="Curve2D_jeuul"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -640, -360, 0, 0, 0, 0, 640, -360, 0, 0, 0, 0, 640, 360, 0, 0, 0, 0, -640, 360, 0, 0, 0, 0, -640, -360)
+}
+point_count = 5
+
+[node name="scene" type="Node2D"]
+script = ExtResource("1_vrti2")
+
+[node name="back" type="TextureRect" parent="."]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -656.5
+offset_top = -433.0
+offset_right = 656.5
+offset_bottom = 433.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_5l5hc")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.9, 0.9)
+
+[node name="fish" parent="." instance=ExtResource("2_0khgc")]
+
+[node name="despawner" type="Node2D" parent="."]
+
+[node name="right_area" type="Area2D" parent="despawner"]
+
+[node name="left_area" type="Area2D" parent="despawner"]
+
+[node name="top_area" type="Area2D" parent="despawner"]
+
+[node name="bottom_area" type="Area2D" parent="despawner"]
+
+[node name="mw_path" type="Path2D" parent="."]
+curve = SubResource("Curve2D_jeuul")
+
+[node name="mw_spawn" type="PathFollow2D" parent="mw_path"]
+position = Vector2(-640, -360)
