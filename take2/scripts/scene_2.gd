@@ -8,6 +8,7 @@ extends Node2D
 
 func _ready():
 	Global2.lives = 3
+	Global2.score = 0
 
 func _process(delta):
 	if Global2.materwelons <= 0:
@@ -17,8 +18,8 @@ func spawn(mwposition = null, mwvelocity = null):
 	for i in 3:
 	
 		if mwposition == null:
-			spawn_path.progress = randi()
-			mwposition = spawn_path.position
+			spawn_path.progress = randi_range(0, int(spawn_path.get_parent().curve.get_baked_length()))
+			mwposition = spawn_path.global_position
 		
 		if mwvelocity == null:
 			mwvelocity = Vector2.RIGHT.rotated(randf_range(0, TAU)) * randf_range(50, 125)

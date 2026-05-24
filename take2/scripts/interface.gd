@@ -14,9 +14,43 @@ signal fire_signal
 signal fire_up
 
 @onready var pause_window = $MarginContainer/pause
+@onready var fail_window = $MarginContainer/fail
+
+@onready var l1 = $MarginContainer/HBoxContainer4/lives/l1
+@onready var l2 = $MarginContainer/HBoxContainer4/lives/l2
+@onready var l3 = $MarginContainer/HBoxContainer4/lives/l3
 
 func _ready():
+	Engine.time_scale = 1
+	Global2.lives = 3
+	Global2.materwelons = 0
 	pause_window.visible = false
+	fail_window.visible = false
+	set_lives()
+
+func _process(_delta):
+	set_lives()
+
+func set_lives():
+	match Global2.lives:
+		3:
+			l1.visible = true
+			l2.visible = true
+			l3.visible = true
+		2: 
+			l1.visible = true
+			l2.visible = true
+			l3.visible = false
+		1:
+			l1.visible = true
+			l2.visible = false
+			l3.visible = false
+		0: 
+			l1.visible = false
+			l2.visible = false
+			l3.visible = false
+			Engine.time_scale = 0
+			fail_window.visible = true
 
 func _on_thrust_button_up():
 	thrust_up.emit()
@@ -42,7 +76,6 @@ func _on_fire_button_down():
 func _on_fire_button_up():
 	fire_up.emit()
 
-
 func _on_back_pressed():
 	pause_window.visible = false
 	Engine.time_scale = 1
@@ -53,3 +86,9 @@ func _on_exit_pressed():
 func _on_pause_pressed():
 	pause_window.visible = true
 	Engine.time_scale = 0
+
+func _on_again_pressed():
+	Engine.time_scale = 1
+	fail_window.visible = false
+	get_tree().reload_current_scene()
+	

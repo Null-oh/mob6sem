@@ -19,7 +19,7 @@ var level: Level:
 		match _level:
 			Level.BIG:
 				sprite.play("big")
-				collision_big.visible = false
+				collision_big.visible = true
 				collision_mid.visible = false
 				collision_small.visible = false
 			Level.MID: 
@@ -46,12 +46,6 @@ func _ready():
 	gravity_scale = 0
 	linear_damp = 0
 	angular_damp = 0
-	
-	#contact_monitor = true
-	#max_contacts_reported = 1
-	#collision_mask = 2
-	
-	#notifier.rect = Rect2(Vector2.ZERO, screensize)
 
 func start(_position, _velocity):
 	position = _position
@@ -59,20 +53,24 @@ func start(_position, _velocity):
 	angular_velocity = randf_range(-PI, PI)
 	
 	Global2.materwelons += 1
+	print(Global2.materwelons)
 
 func hit():
-	print("HIT")
+	print(Global2.materwelons)
+	linear_velocity = Vector2(-abs(linear_velocity.x), linear_velocity.y)
 	match level:
 		Level.BIG:
+			spawn_extra(Level.MID)
 			level = Level.MID
-			print("BIG to MID")
+			
 		Level.MID:
+			spawn_extra(Level.SMALL)
 			level = Level.SMALL
-			print("MID to SMALL")
+			
 		Level.SMALL:
 			level = Level.DED
-			print("DED")
-		Level.DED: pass
+		Level.DED:
+			Global2.score += 1
 
 func _on_area_2d_body_entered(body):
 	if body.name == "fish":
@@ -148,3 +146,22 @@ func _integrate_forces(physics_state):
 	xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
 	xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
 	physics_state.transform = xform
+
+func spawn_extra(new_level):
+	var new_mw = mw_scene.instantiate()
+	#new_mw._level = new_level
+	new_mw.screensize = screensize
+	
+	#var offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
+	#new_mw.position = position + offset
+	new_mw.position = position
+	
+	new_mw.linear_velocity = Vector2(abs(linear_velocity.x), linear_velocity.y) 
+	new_mw.angular_velocity = angular_velocity
+	
+	get_parent().add_child(new_mw)
+	new_mw.level = new_level
+	Global2.materwelons += 1
+	print(Global2.materwelons)
+	#get_parent().call_deferred("add_child", new_mw)
+	#new_mw.call_deferred("set", "level", new_level)
