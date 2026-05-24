@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d11n5adbcalr6"]
+
+[node name="wm_explosion" type="CPUParticles2D" unique_id=1996207088]
+scale = Vector2(3, 3)
+emitting = false
+amount = 150
+lifetime = 0.5
+one_shot = true
+speed_scale = 1.5
+explosiveness = 0.2
+lifetime_randomness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+radial_accel_min = 45.0
+radial_accel_max = 45.0
+scale_amount_max = 10.0
+color = Color(0.81, 0.22679998, 0.23651986, 1)

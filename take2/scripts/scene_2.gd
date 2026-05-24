@@ -28,3 +28,4 @@ func spawn(mwposition = null, mwvelocity = null):
 		mw_instance.screensize = screensize
 		mw_instance.start(mwposition, mwvelocity)
 		call_deferred("add_child", mw_instance)
+		print("MW created: ", mw_instance.position)

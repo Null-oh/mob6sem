@@ -5,7 +5,7 @@ enum {INIT, ALIVE, SAFE, DED}
 var state = INIT
 
 @export var engine_power = 1000
-@export var spin_power = 50000
+@export var spin_power = 20000
 var thrust = Vector2.ZERO
 var rotation_dir = 0
 
@@ -29,6 +29,8 @@ var lives : int
 var reset_pos : bool = false
 
 @onready var sprite = $Sprite2D
+@onready var bubbles = $bubbles
+@onready var salmon = $salmon
 
 func _ready():
 	change_state(ALIVE)
@@ -36,6 +38,9 @@ func _ready():
 	reset_pos = true
 	
 	cooldown.wait_time = fire_rate
+	
+	bubbles.emitting = false
+	salmon.emitting = false
 	
 	if interface:
 		interface.thrust_signal.connect(_on_thrust_signal)
@@ -70,6 +75,9 @@ func get_input():
 	
 	if Input.is_action_pressed("ui_up") or is_thrust:
 		thrust = - transform.y * engine_power
+		bubbles.emitting = true
+	else:
+		bubbles.emitting = false
 	
 	var input_dir = 0
 	if is_left:
@@ -140,4 +148,5 @@ func _on_fire_up():
 func _on_body_entered(body):
 	if body.is_in_group("materwelons"):
 		print("collision")
+		salmon.emitting = true
 		Global2.lives -= 1

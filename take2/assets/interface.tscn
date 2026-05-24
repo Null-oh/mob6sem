@@ -202,6 +202,10 @@ stretch_mode = 4
 [node name="score" type="Label" parent="MarginContainer/HBoxContainer4" unique_id=786280128]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.81, 0.4131, 0.4197149, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0)
+theme_override_colors/font_outline_color = Color(0.84000003, 1, 0.68, 0.6666667)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 35
 text = " score "
 

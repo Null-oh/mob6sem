@@ -20,16 +20,20 @@ signal fire_up
 @onready var l2 = $MarginContainer/HBoxContainer4/lives/l2
 @onready var l3 = $MarginContainer/HBoxContainer4/lives/l3
 
+@onready var score_label = $MarginContainer/HBoxContainer4/score
+
 func _ready():
 	Engine.time_scale = 1
 	Global2.lives = 3
 	Global2.materwelons = 0
 	pause_window.visible = false
 	fail_window.visible = false
+	score_label.text = str(Global2.score)
 	set_lives()
 
 func _process(_delta):
 	set_lives()
+	score_label.text = str(Global2.score)
 
 func set_lives():
 	match Global2.lives:

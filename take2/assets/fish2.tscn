@@ -3,6 +3,11 @@
 [ext_resource type="Script" uid="uid://c14lrokg3f7ms" path="res://take2/scripts/fish2.gd" id="1_8oxvb"]
 [ext_resource type="PackedScene" uid="uid://cngn31k6m0g8f" path="res://assets/sock.tscn" id="2_juq60"]
 [ext_resource type="Texture2D" uid="uid://2yynbvxa1sf0" path="res://img/fish.png" id="2_loh4v"]
+[ext_resource type="Texture2D" uid="uid://d1ls80tpjtepw" path="res://img/bubble.png" id="3_rurob"]
+[ext_resource type="Texture2D" uid="uid://dcsn8lxtyrn3o" path="res://img/salmon.png" id="4_gn1ul"]
+
+[sub_resource type="Gradient" id="Gradient_gn1ul"]
+colors = PackedColorArray(0.48000002, 0.6533334, 1, 1, 1, 1, 1, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8akw"]
 radius = 29.0
@@ -17,16 +22,55 @@ angular_damp = 5.0
 script = ExtResource("1_8oxvb")
 sock_scene = ExtResource("2_juq60")
 
+[node name="bubbles" type="CPUParticles2D" parent="." unique_id=929846282]
+texture_filter = 1
+position = Vector2(-3, 46)
+rotation = 1.5707964
+amount = 50
+texture = ExtResource("3_rurob")
+lifetime = 1.5
+spread = 60.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 80.0
+angular_velocity_max = 20.0
+linear_accel_max = 1.5
+scale_amount_min = 0.7
+scale_amount_max = 1.2
+color_ramp = SubResource("Gradient_gn1ul")
+anim_speed_max = 1.0
+
+[node name="salmon" type="CPUParticles2D" parent="." unique_id=415143276]
+texture_filter = 1
+emitting = false
+amount = 3
+texture = ExtResource("4_gn1ul")
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.8
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+angular_velocity_min = -100.0
+angular_velocity_max = 100.0
+linear_accel_min = 1.0
+linear_accel_max = 10.0
+radial_accel_min = 6.47
+radial_accel_max = 6.47
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2114547829]
 texture_filter = 1
 rotation = -1.5708
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_loh4v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=584617604]
+scale = Vector2(0.5, 0.5)
 shape = SubResource("CapsuleShape2D_r8akw")
 
 [node name="muzzle" type="Marker2D" parent="." unique_id=2115891300]
-position = Vector2(0, -140)
+position = Vector2(0, -70)
 
 [node name="sock_cooldown" type="Timer" parent="." unique_id=2142659962]
 one_shot = true

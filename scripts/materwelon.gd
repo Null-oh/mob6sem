@@ -11,6 +11,8 @@ extends RigidBody2D
 @onready var screensize = get_viewport_rect().size
 @export var mw_scene = preload("res://assets/materwelon.tscn")
 
+@onready var explosion_scene = preload("res://assets/mw_explosion.tscn")
+
 enum Level { BIG, MID, SMALL, DED}
 var _level: Level
 var level: Level:
@@ -60,17 +62,37 @@ func hit():
 	linear_velocity = Vector2(-abs(linear_velocity.x), linear_velocity.y)
 	match level:
 		Level.BIG:
+			
 			spawn_extra(Level.MID)
 			level = Level.MID
-			
+			explode()
 		Level.MID:
+			
 			spawn_extra(Level.SMALL)
 			level = Level.SMALL
-			
+			explode()
 		Level.SMALL:
+			
 			level = Level.DED
-		Level.DED:
 			Global2.score += 1
+			explode()
+		Level.DED: pass
+
+func explode():
+	print("explosion_scene: ", explosion_scene)
+	
+	if explosion_scene:
+		var explosion_instance = explosion_scene.instantiate()
+		print("Instance created: ", explosion_instance)
+		
+		explosion_instance.position = global_position
+		get_tree().root.add_child(explosion_instance)
+		
+		print("Child added. Children count of parent: ", get_parent().get_child_count())
+		
+		if explosion_instance is CPUParticles2D or explosion_instance is GPUParticles2D:
+			explosion_instance.emitting = true
+			print("Particles emitting set to true")
 
 func _on_area_2d_body_entered(body):
 	if body.name == "fish":
@@ -152,8 +174,6 @@ func spawn_extra(new_level):
 	#new_mw._level = new_level
 	new_mw.screensize = screensize
 	
-	#var offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
-	#new_mw.position = position + offset
 	new_mw.position = position
 	
 	new_mw.linear_velocity = Vector2(abs(linear_velocity.x), linear_velocity.y) 
@@ -163,5 +183,3 @@ func spawn_extra(new_level):
 	new_mw.level = new_level
 	Global2.materwelons += 1
 	print(Global2.materwelons)
-	#get_parent().call_deferred("add_child", new_mw)
-	#new_mw.call_deferred("set", "level", new_level)
