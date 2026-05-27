@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://bu76npfepnlf1"]
+
+[ext_resource type="Script" uid="uid://dq00bb03kfqtf" path="res://scripts/enemy.gd" id="1_q2h73"]
+[ext_resource type="Texture2D" uid="uid://ch16xb208kma8" path="res://img/usa.png" id="2_pw0vb"]
+[ext_resource type="PackedScene" uid="uid://i2w40basprnj" path="res://assets/enemy_paths.tscn" id="3_pw0vb"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nyjvj"]
+radius = 16.0
+height = 86.0
+
+[sub_resource type="Animation" id="Animation_edavc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_icab4"]
+resource_name = "flash"
+length = 0.24
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.04002503, 0.08, 0.12, 0.16, 0.2, 0.24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_npimb"]
+_data = {
+&"RESET": SubResource("Animation_edavc"),
+&"flash": SubResource("Animation_icab4")
+}
+
+[node name="enemy" type="Area2D" unique_id=997287872 groups=["enemies"]]
+script = ExtResource("1_q2h73")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1967302562]
+modulate = Color(1, 0, 0, 1)
+texture_filter = 1
+texture = ExtResource("2_pw0vb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=47605471]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_nyjvj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2064070220]
+libraries/ = SubResource("AnimationLibrary_npimb")
+
+[node name="enemy_paths" parent="." unique_id=1657906345 instance=ExtResource("3_pw0vb")]
+
+[node name="cooldown" type="Timer" parent="." unique_id=1337258483]
+wait_time = 1.5
+autostart = true
+
+[connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]

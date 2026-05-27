@@ -34,6 +34,13 @@ func _ready():
 func _process(_delta):
 	set_lives()
 	score_label.text = str(Global2.score)
+	
+	if Input.is_action_pressed("ui_cancel"):
+		if pause_window.visible == false:
+			_on_pause_pressed()
+		else:
+			_on_back_pressed()
+		
 
 func set_lives():
 	match Global2.lives:
