@@ -34,6 +34,18 @@ var reset_pos : bool = false
 @export var max_shield : float = 100
 @export var shield_regen : float = 5
 
+@onready var shoot_sound = $shoot
+@onready var short1 = preload("res://sounds/short1.mp3")
+@onready var short2 = preload("res://sounds/short2.mp3")
+@onready var short3 = preload("res://sounds/short3.mp3")
+@onready var short4 = preload("res://sounds/short4.mp3")
+
+@onready var thrust_sound = $thrust
+@onready var long1 = preload("res://sounds/long1.mp3")
+@onready var long2 = preload("res://sounds/long2.mp3")
+
+
+
 func _ready():
 	change_state(ALIVE)
 	lives = Global2.lives
@@ -75,8 +87,25 @@ func _process(delta):
 		Global2.lives -= 1
 		Global2.shield = max_shield
 
+func play_short():
+	var sounds = [short1, short2, short3, short4 ]
+	var random_index = randi() % sounds.size()
+	shoot_sound.stream = sounds[random_index]
+	shoot_sound.play()
+
+func play_long():
+	if thrust_sound.playing:
+		return
+	
+	var sounds = [long1, long2 ]
+	var random_index = randi() % sounds.size()
+	thrust_sound.stream = sounds[random_index]
+	thrust_sound.play()
 
 func get_input():
+	if !Global2.playing:
+		return
+	
 	thrust = Vector2.ZERO
 	if state in [DED, INIT]:
 		return
@@ -84,8 +113,10 @@ func get_input():
 	if Input.is_action_pressed("ui_up") or is_thrust:
 		thrust = - transform.y * engine_power
 		bubbles.emitting = true
+		play_long()
 	else:
 		bubbles.emitting = false
+		thrust_sound.stop()
 	
 	var input_dir = 0
 	if is_left:
@@ -124,6 +155,7 @@ func shoot():
 	var sock_instance = sock_scene.instantiate()
 	get_tree().root.add_child(sock_instance)
 	sock_instance.start($muzzle.global_transform)
+	play_short()
 
 func _on_body_entered(body):
 	if body.is_in_group("materwelons") or body.is_in_group("food"):

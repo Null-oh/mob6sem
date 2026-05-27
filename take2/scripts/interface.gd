@@ -25,14 +25,20 @@ signal fire_up
 @onready var shield_texture = $MarginContainer/VBoxContainer/shield/TextureRect
 @onready var shield_bar = $MarginContainer/VBoxContainer/shield/ProgressBar
 
+@onready var ded_sound = $ded_sound
+
 func _ready():
-	Engine.time_scale = 1
+	#Engine.time_scale = 1
+	Global2.playing = true
 	Global2.lives = 3
 	Global2.materwelons = 0
 	pause_window.visible = false
 	fail_window.visible = false
 	score_label.text = str(Global2.score)
 	set_lives()
+	
+	print(ded_sound)
+	print(ded_sound.stream)
 
 func _process(_delta):
 	set_lives()
@@ -64,8 +70,19 @@ func set_lives():
 			l1.visible = false
 			l2.visible = false
 			l3.visible = false
-			Engine.time_scale = 0
+			
+			#Engine.time_scale = 0
+			Global2.playing = false
 			fail_window.visible = true
+			print("Пытаюсь сыграть ded_sound. ded_sound = ", ded_sound)
+			if ded_sound:
+				print("stream = ", ded_sound.stream)
+				print("before play: playing = ", ded_sound.playing)
+				ded_sound.play()
+				print("after play: playing = ", ded_sound.playing)
+				await get_tree().create_timer(0.5).timeout
+				print("через 0.5 сек: playing = ", ded_sound.playing)
+
 
 func _on_thrust_button_up():
 	thrust_up.emit()
@@ -93,17 +110,19 @@ func _on_fire_button_up():
 
 func _on_back_pressed():
 	pause_window.visible = false
-	Engine.time_scale = 1
+	#Engine.time_scale = 1
+	Global2.playing = true
 
 func _on_exit_pressed():
 	get_tree().quit()
 
 func _on_pause_pressed():
 	pause_window.visible = true
-	Engine.time_scale = 0
+	#Engine.time_scale = 0
+	Global2.playing = false
 
 func _on_again_pressed():
-	Engine.time_scale = 1
+	#Engine.time_scale = 1
+	Global2.playing = true
 	fail_window.visible = false
 	get_tree().reload_current_scene()
-	

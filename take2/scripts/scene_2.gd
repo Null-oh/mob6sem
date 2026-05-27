@@ -19,6 +19,7 @@ func _ready():
 	enemyTimer.start(randf_range(5, 10))
 	
 	Global2.global_screensize = get_viewport().get_visible_rect().size
+	Global2.is_enemy = false
 
 func _process(_delta):
 	if !spawning and Global2.materwelons <= 0:
@@ -50,4 +51,5 @@ func _on_enemy_timer_timeout():
 	var enemy_instance = enemy_scene.instantiate()
 	add_child(enemy_instance)
 	enemy_instance.target = $Fish2
+	Global2.is_enemy = true
 	enemyTimer.start(randf_range(20, 40))

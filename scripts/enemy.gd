@@ -39,10 +39,12 @@ func _physics_process(delta):
 	
 	if follow.progress_ratio >= 1:
 		queue_free()
+		Global2.is_enemy = false
 	
 	if health <= 0:
 		Global2.score += 5
 		queue_free()
+		Global2.is_enemy = false
 
 func shoot():
 	var dir = global_position.direction_to(target.global_position)
