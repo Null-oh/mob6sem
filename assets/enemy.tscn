@@ -66,4 +66,5 @@ libraries/ = SubResource("AnimationLibrary_npimb")
 wait_time = 2.0
 autostart = true
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]

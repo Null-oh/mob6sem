@@ -16,7 +16,6 @@ func _ready():
 	collision_mask = 1
 	var chosen_colour = colours.pick_random()
 	sprite.play(chosen_colour)
-	#print("sock fired: ", chosen_colour)
 	
 	body_entered.connect(_on_body_entered)
 	
@@ -35,19 +34,13 @@ func _on_body_entered(body):
 	if body.is_in_group("materwelons"):
 		body.hit()
 		queue_free()
-	
-	#if body.is_in_group("enemies"):
-		#print("usa hit")
-		#body.health -= 1
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
-	#print("sock despawned")
 	queue_free()
 
 
 func _on_area_entered(area):
 	if area.is_in_group("enemies"):
-		print("usa hit")
 		area.take_damage()
 		queue_free()
 	

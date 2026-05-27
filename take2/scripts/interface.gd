@@ -16,11 +16,14 @@ signal fire_up
 @onready var pause_window = $MarginContainer/pause
 @onready var fail_window = $MarginContainer/fail
 
-@onready var l1 = $MarginContainer/HBoxContainer4/lives/l1
-@onready var l2 = $MarginContainer/HBoxContainer4/lives/l2
-@onready var l3 = $MarginContainer/HBoxContainer4/lives/l3
+@onready var l1 = $MarginContainer/VBoxContainer/HBoxContainer4/lives/l1
+@onready var l2 = $MarginContainer/VBoxContainer/HBoxContainer4/lives/l2
+@onready var l3 = $MarginContainer/VBoxContainer/HBoxContainer4/lives/l3
 
-@onready var score_label = $MarginContainer/HBoxContainer4/score
+@onready var score_label = $MarginContainer/VBoxContainer/HBoxContainer4/score
+
+@onready var shield_texture = $MarginContainer/VBoxContainer/shield/TextureRect
+@onready var shield_bar = $MarginContainer/VBoxContainer/shield/ProgressBar
 
 func _ready():
 	Engine.time_scale = 1
@@ -40,7 +43,8 @@ func _process(_delta):
 			_on_pause_pressed()
 		else:
 			_on_back_pressed()
-		
+	
+	shield_bar.value = Global2.shield
 
 func set_lives():
 	match Global2.lives:

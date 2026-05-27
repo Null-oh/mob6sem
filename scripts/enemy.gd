@@ -45,14 +45,12 @@ func _physics_process(delta):
 		queue_free()
 
 func shoot():
-	print("shoot")
 	var dir = global_position.direction_to(target.global_position)
 	dir = dir.rotated(randf_range(-bullet_spread, bullet_spread))
 	
 	var bullet_instance = bullet_scene.instantiate()
 	get_tree().root.add_child(bullet_instance)
 	bullet_instance.start(global_position, dir)
-	print(bullet_instance.position)
 
 func pulse(n, delay):
 	for i in n:
@@ -76,4 +74,8 @@ func take_damage():
 func explode():
 	speed = 0
 	cooldown_timer.stop()
-	
+
+func _on_body_entered(body):
+	if body.name == "Fish2":
+		Global2.shield -= 50
+		take_damage()

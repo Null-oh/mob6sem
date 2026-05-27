@@ -28,7 +28,7 @@ func _process(delta):
 
 func _on_body_entered(body):
 	if body.name == "Fish2":
-		print("fsh hit")
+		Global2.shield -= 15
 	
 	queue_free()
 

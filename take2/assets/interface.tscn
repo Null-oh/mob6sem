@@ -2,6 +2,13 @@
 
 [ext_resource type="Script" uid="uid://drp3rhyoougmd" path="res://take2/scripts/interface.gd" id="1_qfl0l"]
 [ext_resource type="Texture2D" uid="uid://bqpqs7uefadqq" path="res://img/pngwing.com.png" id="2_rrwbr"]
+[ext_resource type="Texture2D" uid="uid://d26k23imi40hn" path="res://img/hat.png" id="3_kylta"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5so81"]
+bg_color = Color(0.92802936, 0.8338948, 0.20148346, 1)
+
+[sub_resource type="Theme" id="Theme_xmwj6"]
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_5so81")
 
 [node name="interface" type="CanvasLayer" unique_id=1559599400]
 script = ExtResource("1_qfl0l")
@@ -16,19 +23,6 @@ theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer" unique_id=580994600]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-
-[node name="pause" type="Button" parent="MarginContainer/HBoxContainer3" unique_id=1620298709]
-texture_filter = 1
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-focus_mode = 1
-theme_override_font_sizes/font_size = 40
-text = " X "
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer" unique_id=1901999982]
 custom_minimum_size = Vector2(170, 80)
@@ -167,39 +161,45 @@ focus_mode = 1
 theme_override_font_sizes/font_size = 35
 text = " ВЫЙТИ "
 
-[node name="HBoxContainer4" type="VBoxContainer" parent="MarginContainer" unique_id=1691054134]
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=353503423]
+layout_direction = 2
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 60
+
+[node name="HBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1691054134]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/separation = 10
 
-[node name="lives" type="HBoxContainer" parent="MarginContainer/HBoxContainer4" unique_id=1681334525]
+[node name="lives" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1681334525]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="l1" type="TextureRect" parent="MarginContainer/HBoxContainer4/lives" unique_id=360906057]
+[node name="l1" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer4/lives" unique_id=360906057]
 texture_filter = 1
 layout_mode = 2
 texture = ExtResource("2_rrwbr")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="l2" type="TextureRect" parent="MarginContainer/HBoxContainer4/lives" unique_id=198772574]
+[node name="l2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer4/lives" unique_id=198772574]
 texture_filter = 1
 layout_mode = 2
 texture = ExtResource("2_rrwbr")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="l3" type="TextureRect" parent="MarginContainer/HBoxContainer4/lives" unique_id=838518256]
+[node name="l3" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer4/lives" unique_id=838518256]
 texture_filter = 1
 layout_mode = 2
 texture = ExtResource("2_rrwbr")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="score" type="Label" parent="MarginContainer/HBoxContainer4" unique_id=786280128]
+[node name="score" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=786280128]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.81, 0.4131, 0.4197149, 1)
@@ -209,7 +209,40 @@ theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 35
 text = " score "
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer3/pause" to="." method="_on_pause_pressed"]
+[node name="shield" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=180802029]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/shield" unique_id=61027243]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_kylta")
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/shield" unique_id=1825001725]
+custom_minimum_size = Vector2(400, 25)
+layout_mode = 2
+size_flags_vertical = 4
+theme = SubResource("Theme_xmwj6")
+value = 0.75
+show_percentage = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=580994600]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+
+[node name="pause" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1620298709]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+focus_mode = 1
+theme_override_font_sizes/font_size = 40
+text = " X "
+
 [connection signal="button_down" from="MarginContainer/HBoxContainer2/thrust" to="." method="_on_thrust_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer2/thrust" to="." method="_on_thrust_button_up"]
 [connection signal="button_down" from="MarginContainer/HBoxContainer2/fire" to="." method="_on_fire_button_down"]
@@ -222,3 +255,4 @@ text = " score "
 [connection signal="pressed" from="MarginContainer/pause/MarginContainer/VBoxContainer/exit" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="MarginContainer/fail/MarginContainer/VBoxContainer/again" to="." method="_on_again_pressed"]
 [connection signal="pressed" from="MarginContainer/fail/MarginContainer/VBoxContainer/exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/pause" to="." method="_on_pause_pressed"]

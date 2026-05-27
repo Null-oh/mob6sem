@@ -13,9 +13,12 @@ var spawning : bool = false
 func _ready():
 	Global2.lives = 3
 	Global2.score = 0
+	Global2.materwelons = 0
 	spawning = false
 	
 	enemyTimer.start(randf_range(5, 10))
+	
+	Global2.global_screensize = get_viewport().get_visible_rect().size
 
 func _process(_delta):
 	if !spawning and Global2.materwelons <= 0:
@@ -23,6 +26,7 @@ func _process(_delta):
 		spawning = true
 
 func spawn():
+	spawning = true
 	for i in 3:
 		var path_length = spawn_path.get_parent().curve.get_baked_length()
 		spawn_path.progress = randf_range(0, path_length)
@@ -38,6 +42,7 @@ func spawn():
 		mw_instance.start(spawn_global_pos, velocity)
 		
 	await get_tree().create_timer(0.1).timeout
+	print("spawn() завершён, spawning = false")
 	spawning = false
 
 

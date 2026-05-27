@@ -8,7 +8,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_oh8wx"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1312, 0, 0, 0, 0, 0, 1312, 864, 0, 0, 0, 0, 0, 864, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1152, 0, 0, 0, 0, 0, 1152, 648, 0, 0, 0, 0, 0, 648, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
@@ -33,10 +33,8 @@ curve = SubResource("Curve2D_oh8wx")
 [node name="enemyTimer" type="Timer" parent="." unique_id=2141566577]
 one_shot = true
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=465028734]
-visible = false
-position = Vector2(-408, -224)
-anchor_mode = 0
-zoom = Vector2(0.5, 0.5)
+[node name="Camera2D" type="Camera2D" parent="." unique_id=621393436]
+position = Vector2(584, 320)
+zoom = Vector2(0.49, 0.49)
 
 [connection signal="timeout" from="enemyTimer" to="." method="_on_enemy_timer_timeout"]

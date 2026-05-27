@@ -22,7 +22,6 @@ var is_fire : bool = false
 var can_shoot = true
 @onready var cooldown = $sock_cooldown
 
-signal lives_changed
 signal fsh_ded
 var lives : int
 
@@ -31,6 +30,9 @@ var reset_pos : bool = false
 @onready var sprite = $Sprite2D
 @onready var bubbles = $bubbles
 @onready var salmon = $salmon
+
+@export var max_shield : float = 100
+@export var shield_regen : float = 5
 
 func _ready():
 	change_state(ALIVE)
@@ -65,8 +67,14 @@ func change_state(new_state):
 			fsh_ded.emit()
 	state = new_state
 
-func _process(_delta):
+func _process(delta):
 	get_input()
+	Global2.shield += shield_regen * delta
+	Global2.shield = min(Global2.shield, max_shield)
+	if Global2.shield <= 0:
+		Global2.lives -= 1
+		Global2.shield = max_shield
+
 
 func get_input():
 	thrust = Vector2.ZERO
@@ -117,6 +125,20 @@ func shoot():
 	get_tree().root.add_child(sock_instance)
 	sock_instance.start($muzzle.global_transform)
 
+func _on_body_entered(body):
+	if body.is_in_group("materwelons") or body.is_in_group("food"):
+		salmon.emitting = true
+		
+		Global2.shield -= 25
+		
+		if Global2.shield <= 0:
+			Global2.lives -= 1
+			Global2.shield = max_shield
+		
+		if body.is_in_group("materwelons"):
+			Global2.materwelons -= 1
+		body.queue_free()
+
 func _on_sock_cooldown_timeout():
 	can_shoot = true
 
@@ -143,9 +165,3 @@ func _on_fire_signal():
 
 func _on_fire_up():
 	is_fire = false
-
-
-func _on_body_entered(body):
-	if body.is_in_group("materwelons"):
-		salmon.emitting = true
-		Global2.lives -= 1

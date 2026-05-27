@@ -8,10 +8,13 @@ extends RigidBody2D
 
 @onready var notifier = $notifier
 
-@onready var screensize = get_viewport_rect().size
+#@onready var screensize = get_viewport_rect().size
+var screensize: Vector2
 @export var mw_scene = preload("res://assets/materwelon.tscn")
 
 @onready var explosion_scene = preload("res://assets/mw_explosion.tscn")
+
+var is_hiting = false
 
 enum Level { BIG, MID, SMALL, DED}
 var _level: Level
@@ -55,8 +58,14 @@ func start(_position, _velocity):
 	angular_velocity = randf_range(-PI, PI)
 	
 	Global2.materwelons += 1
+	
+	screensize = Global2.global_screensize
 
 func hit():
+	if is_hiting:
+		return
+	
+	is_hiting = true
 	linear_velocity = Vector2(-abs(linear_velocity.x), linear_velocity.y)
 	match level:
 		Level.BIG:
@@ -75,6 +84,7 @@ func hit():
 			Global2.score += 1
 			explode()
 		Level.DED: pass
+	is_hiting = false
 
 func explode():
 	if explosion_scene:
@@ -88,10 +98,7 @@ func explode():
 			explosion_instance.emitting = true
 
 func _on_area_2d_body_entered(body):
-	if body.name == "fish":
-		print("ship hit")
 	if body.is_in_group("socks"):
-		print("sock hit")
 		hit()
 		body.queue_free()
 
@@ -119,51 +126,17 @@ func teleport():
 	global_position = Vector2(new_x, new_y)
 
 func _on_notifier_screen_exited():
-	#screensize = get_viewport_rect().size
-	#var new_pos = global_position
-	#var margin = 10
-	#
-	#if global_position.x < 0:
-		#new_pos.x = screensize.x - margin
-		#print(position)
-		#print("Teleport right")
-		#print(position)
-	#elif global_position.x > screensize.x:
-		#new_pos.x = margin
-		#print(position)
-		#print("Teleport left")
-		#print(position)
-	#
-	#if global_position.y < 0:
-		#new_pos.y = screensize.y - margin
-		#print(position)
-		#print("Teleport down")
-		#print(position)
-	#elif global_position.y > screensize.y:
-		#new_pos.y = margin
-		#print(position)
-		#print("Teleport up")
-		#print(position)
-#
-	#var mw_velocity = linear_velocity
-	#var mw_instance = mw_scene.instantiate()
-	#add_child(mw_instance)
-	#mw_instance.screensize = screensize
-	#mw_instance.start(new_pos, mw_velocity, level)
-	#self.queue_free()
-	
-	#global_position = Vector2(fposmod(global_position.x, screensize.x), fposmod(global_position.y, screensize.y))
 	teleport()
 
-func _integrate_forces(physics_state):
-	var xform = physics_state.transform
-	xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
-	xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
-	physics_state.transform = xform
+#func _integrate_forces(physics_state):
+	#var xform = physics_state.transform
+	#xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
+	#xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
+	#physics_state.transform = xform
 
 func spawn_extra(new_level):
 	var new_mw = mw_scene.instantiate()
-	new_mw.screensize = screensize
+	new_mw.screensize = Global2.global_screensize
 	
 	new_mw.position = position
 	
@@ -173,3 +146,9 @@ func spawn_extra(new_level):
 	get_parent().add_child(new_mw)
 	new_mw.level = new_level
 	Global2.materwelons += 1
+
+func _integrate_forces(physics_state):
+	var xform = physics_state.transform
+	xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
+	xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
+	physics_state.transform = xform
