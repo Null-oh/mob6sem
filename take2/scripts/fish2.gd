@@ -147,6 +147,5 @@ func _on_fire_up():
 
 func _on_body_entered(body):
 	if body.is_in_group("materwelons"):
-		print("collision")
 		salmon.emitting = true
 		Global2.lives -= 1

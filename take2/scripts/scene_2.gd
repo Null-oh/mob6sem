@@ -17,7 +17,7 @@ func _ready():
 	
 	enemyTimer.start(randf_range(5, 10))
 
-func _process(delta):
+func _process(_delta):
 	if !spawning and Global2.materwelons <= 0:
 		spawn()
 		spawning = true
@@ -36,8 +36,6 @@ func spawn():
 		call_deferred("add_child", mw_instance)
 		mw_instance.global_position = spawn_global_pos
 		mw_instance.start(spawn_global_pos, velocity)
-		
-		print("MW created: ", mw_instance.position)
 		
 	await get_tree().create_timer(0.1).timeout
 	spawning = false

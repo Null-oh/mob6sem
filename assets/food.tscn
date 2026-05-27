@@ -7,35 +7,49 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5uh48"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_2123h"]
+atlas = ExtResource("4_shpsl")
+region = Rect2(0, 0, 25, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8dvt"]
+atlas = ExtResource("2_q8dvt")
+region = Rect2(0, 0, 16, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khgh3"]
+atlas = ExtResource("3_khgh3")
+region = Rect2(0, 0, 25, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_shpsl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2123h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q8dvt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khgh3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="food" type="Area2D" unique_id=217257951]
 script = ExtResource("1_2123h")
 
-[node name="sprites" type="Node" parent="." unique_id=574386135]
-
-[node name="one" type="Sprite2D" parent="sprites" unique_id=1329825766]
-visible = false
-texture_filter = 1
-texture = ExtResource("2_q8dvt")
-
-[node name="two" type="Sprite2D" parent="sprites" unique_id=1729362267]
-visible = false
-texture_filter = 1
-texture = ExtResource("3_khgh3")
-
-[node name="three" type="Sprite2D" parent="sprites" unique_id=292985318]
-visible = false
-texture_filter = 1
-texture = ExtResource("4_shpsl")
-
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1903941032]
+texture_filter = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1489125022]
 shape = SubResource("CircleShape2D_5uh48")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1584639700]
 
-[node name="cooldown" type="Timer" parent="." unique_id=699498968]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=740242756]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_shpsl")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
-[connection signal="timeout" from="cooldown" to="." method="_on_cooldown_timeout"]

@@ -55,10 +55,8 @@ func start(_position, _velocity):
 	angular_velocity = randf_range(-PI, PI)
 	
 	Global2.materwelons += 1
-	print(Global2.materwelons)
 
 func hit():
-	print(Global2.materwelons)
 	linear_velocity = Vector2(-abs(linear_velocity.x), linear_velocity.y)
 	match level:
 		Level.BIG:
@@ -79,20 +77,15 @@ func hit():
 		Level.DED: pass
 
 func explode():
-	print("explosion_scene: ", explosion_scene)
-	
 	if explosion_scene:
 		var explosion_instance = explosion_scene.instantiate()
-		print("Instance created: ", explosion_instance)
 		
 		explosion_instance.position = global_position
 		get_tree().root.add_child(explosion_instance)
 		
-		print("Child added. Children count of parent: ", get_parent().get_child_count())
 		
 		if explosion_instance is CPUParticles2D or explosion_instance is GPUParticles2D:
 			explosion_instance.emitting = true
-			print("Particles emitting set to true")
 
 func _on_area_2d_body_entered(body):
 	if body.name == "fish":
@@ -126,7 +119,6 @@ func teleport():
 	global_position = Vector2(new_x, new_y)
 
 func _on_notifier_screen_exited():
-	print("mw exited")
 	#screensize = get_viewport_rect().size
 	#var new_pos = global_position
 	#var margin = 10
@@ -171,7 +163,6 @@ func _integrate_forces(physics_state):
 
 func spawn_extra(new_level):
 	var new_mw = mw_scene.instantiate()
-	#new_mw._level = new_level
 	new_mw.screensize = screensize
 	
 	new_mw.position = position
@@ -182,4 +173,3 @@ func spawn_extra(new_level):
 	get_parent().add_child(new_mw)
 	new_mw.level = new_level
 	Global2.materwelons += 1
-	print(Global2.materwelons)
